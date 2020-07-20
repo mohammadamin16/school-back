@@ -4,20 +4,22 @@ from django.db import models
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, username, password=""):
+    def create_user(self, username, password, name):
         user = self.model(
             username=username,
             password=password,
+            name=name
         )
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, username, password):
+    def create_superuser(self, username, password, name):
 
         user = self.create_user(
             username=username,
             password=password,
+            name=name
         )
         user.is_admin = True
         user.save()
@@ -27,12 +29,16 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
+    name     = models.CharField(max_length=200)
+
+    teacher = models.ForeignKey('User', on_delete=models.CASCADE, related_name='t', null=True)
+    students = models.ManyToManyField('User', related_name='s')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['password']
+    REQUIRED_FIELDS = ['password', 'name']
 
     objects = UserManager()
 
@@ -48,5 +54,8 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+
 
 
