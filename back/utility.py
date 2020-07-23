@@ -1,5 +1,6 @@
 import json
 from accounts.models import User
+from study.models import Day, Item
 
 
 def user2json(user: User):
@@ -7,6 +8,38 @@ def user2json(user: User):
         'username': user.username,
         'name': user.name,
     }
+
+
+
+def item2json(item: Item):
+    return {
+        'course': item.course,
+        'duration': item.duration,
+        'tests_desc': item.tests_desc,
+        'study_desc': item.study_desc
+    }
+
+
+def items2json(items: list):
+    result = []
+    for item in items:
+        result.append(item2json(item))
+    return result
+
+
+def day2json(day: Day):
+    return {
+        'date': day.date.strftime('%y-%m-%d'),
+        'item': items2json(day.items.all())
+    }
+
+
+def days2json(days: list):
+    result = []
+    for day in days:
+        result.append(day2json(day))
+    return result
+
 
 def get_data(request):
     try:
@@ -24,7 +57,7 @@ def get_files(request):
     return files
 
 
-def get_response(msg, success=True, data=None):
+def get_response(msg, success, data=None):
     response = {'msg': msg,
                 'success': success,
                 'data': data}

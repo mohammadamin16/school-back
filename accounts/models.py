@@ -31,6 +31,15 @@ class User(AbstractBaseUser):
     password = models.CharField(max_length=100)
     name     = models.CharField(max_length=200)
 
+    TYPES = (
+        ('T', 'Teacher'),
+        ('S', 'Student'),
+    )
+
+    type = models.CharField(max_length=1, choices=TYPES, default='S')
+
+    days = models.ManyToManyField('study.Day')
+
     teacher = models.ForeignKey('User', on_delete=models.CASCADE, related_name='t', null=True)
     students = models.ManyToManyField('User', related_name='s')
 
