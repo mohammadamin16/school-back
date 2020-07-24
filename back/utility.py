@@ -10,7 +10,6 @@ def user2json(user: User):
     }
 
 
-
 def item2json(item: Item):
     return {
         'course': item.course,
@@ -30,7 +29,8 @@ def items2json(items: list):
 def day2json(day: Day):
     return {
         'date': day.date.strftime('%y-%m-%d'),
-        'item': items2json(day.items.all())
+        'items': items2json(day.items.all()),
+        'total_time': day.total_time,
     }
 
 
