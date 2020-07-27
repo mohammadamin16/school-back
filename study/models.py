@@ -16,6 +16,7 @@ class Day(models.Model):
         return total
 
 
+
 class Item(models.Model):
     # COURSE_CHOICES = (
     #     ('P', 'Physics'),
