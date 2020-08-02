@@ -37,9 +37,7 @@ class User(AbstractBaseUser):
     )
 
     type = models.CharField(max_length=1, choices=TYPES, default='S')
-
     days = models.ManyToManyField('study.Day')
-
     teacher = models.ForeignKey('User', on_delete=models.CASCADE, related_name='t', null=True)
     students = models.ManyToManyField('User', related_name='s')
 
@@ -63,8 +61,4 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
-
-
-
-
 

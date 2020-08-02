@@ -1,13 +1,22 @@
 import json
 from accounts.models import User
-from study.models import Day, Item
+from study.models import Day, Item, Comment
 
 
 def user2json(user: User):
     return {
         'username': user.username,
         'name': user.name,
+        'type': user.type,
     }
+
+
+def users2json(users: list):
+    result = []
+    if len(users) == 0 : return[]
+    for user in users:
+        result.append(user2json(user))
+    return result
 
 
 def clean_items(_items: list):
@@ -16,7 +25,6 @@ def clean_items(_items: list):
         if None not in item:
             chosen_items.append(item)
 
-    print('edited', chosen_items)
     return chosen_items
 
 
@@ -31,6 +39,7 @@ def item2json(item: Item):
 
 def items2json(items: list):
     result = []
+    if len(items) == 0 : return []
     for item in items:
         result.append(item2json(item))
     return result
@@ -43,32 +52,56 @@ def json2item(j: list):
         tests_desc=j[1],
         study_desc=j[2],
     )
-    print('item: ', item)
     return item
 
 
 def json2items(l: list):
     l = clean_items(l)
+    if len(l) == 0 : return []
     items = []
     for j in l:
-        print('j', j)
         items.append(json2item(j))
-    print('items: ', items)
     return items
 
 
 def day2json(day: Day):
-    return {
-        'date': day.date.strftime('%y-%m-%d'),
-        'items': items2json(day.items.all()),
-        'total_time': day.total_time,
-    }
+    try:
+        return {
+            'date': day.date.strftime('%y-%m-%d'),
+            'items': items2json(day.items.all()),
+            'total_time': day.total_time,
+            'comments': comment2json(day.comment),
+            'pk': day.pk,
+        }
+    except:
+        return {
+            'date': day.date.strftime('%y-%m-%d'),
+            'items': items2json(day.items.all()),
+            'total_time': day.total_time,
+            'pk': day.pk,
+        }
 
 
 def days2json(days: list):
     result = []
+    if len(days) == 0 : return []
     for day in days:
         result.append(day2json(day))
+    return result
+
+
+def comment2json(comment: Comment):
+    return {
+        'date': comment.date.strftime('%y-%m-%d'),
+        'user': user2json(comment.user),
+        'text': comment.text,
+    }
+
+
+def comments2json(comments: list):
+    result = []
+    for comment in comments:
+        result.append(comment2json(comment))
     return result
 
 

@@ -5,4 +5,7 @@ urlpatterns = [
     # path('add_day', views.add_day),
     path('get_days', views.get_days),
     path('view2', views.view2),
+    path('get_students', views.get_student),
+    path('get_comment', views.get_comment),
+    path('add_comment', views.add_comment),
 ]

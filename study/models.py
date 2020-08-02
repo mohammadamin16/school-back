@@ -1,9 +1,19 @@
 from django.db import models
 
 
+class Comment(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, null=True)
+    text = models.TextField(null=True)
+
+    def __str__(self):
+        return f'({self.user}), {self.text[:30]}'
+
+
 class Day(models.Model):
     date = models.DateField(auto_now_add=True)
     items = models.ManyToManyField('Item')
+    comment = models.ForeignKey('Comment', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.date.strftime('%y-%m-%d')
@@ -14,7 +24,6 @@ class Day(models.Model):
         for item in self.items.all():
             total += item.duration
         return total
-
 
 
 class Item(models.Model):
