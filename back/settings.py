@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'study',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'back.urls'
@@ -121,4 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'STATIC_ROOT')
 AUTH_USER_MODEL = 'accounts.User'
+
+CORS_ORIGIN_ALLOW_ALL=True
