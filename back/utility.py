@@ -22,8 +22,9 @@ def users2json(users: list):
 def clean_items(_items: list):
     chosen_items = []
     for item in _items:
-        if None not in item:
+        if None not in item and item != {}:
             chosen_items.append(item)
+
 
     return chosen_items
 
@@ -45,7 +46,7 @@ def items2json(items: list):
     return result
 
 
-def json2item(j: list):
+def json2item(j: dict):
     item = Item.objects.create(
         course=j[0],
         duration=int(j[3]),
@@ -57,6 +58,8 @@ def json2item(j: list):
 
 def json2items(l: list):
     l = clean_items(l)
+    print('edtied_items:')
+    print(l)
     if len(l) == 0 : return []
     items = []
     for j in l:

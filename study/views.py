@@ -28,13 +28,15 @@ def get_days(request):
         return JsonResponse(response)
 
 
-def view2(request):
+def add_day(request):
     data = utility.get_data(request)
     username = data.get('username')
     try:
         items = data.get('items')
         user = User.objects.get(username=username)
         day = Day.objects.create()
+        print('items')
+        print(items)
         items = utility.json2items(items)
         for item in items:
             day.items.add(item)
@@ -109,5 +111,27 @@ def add_comment(request):
 
     return JsonResponse(response)
 
+
+def edit_day(request):
+    data = utility.get_data(request)
+    username = data.get('username')
+    try:
+        day_pk = int(data.get('day_pk'))
+        items = data.get('items')
+        user = User.objects.get(username=username)
+        day = user.days.get(pk=day_pk)
+        day.items.clear()
+        items = utility.json2items(items)
+        for item in items:
+            day.items.add(item)
+        day.save()
+        print(utility.day2json(day))
+        user.save()
+        response = utility.get_response(f'a day {day_pk} for {username} just edited!', True)
+
+    except Exception as e:
+        traceback.print_exc()
+        response = utility.get_response('something goes wrong', False)
+    return JsonResponse(response)
 
 
