@@ -4,6 +4,8 @@ Django==3.0.8
 django-cors-headers==3.4.0
 django-heroku==0.3.1
 gunicorn==20.0.4
+jdatetime==3.6.2
+persiantools==1.5.0
 psycopg2==2.8.5
 pytz==2020.1
 sqlparse==0.3.1
