@@ -1,4 +1,7 @@
 import json
+
+from persiantools.jdatetime import JalaliDate
+
 from accounts.models import User
 from study.models import Day, Item, Comment
 
@@ -70,7 +73,7 @@ def json2items(l: list):
 def day2json(day: Day):
     try:
         return {
-            'date': day.date.strftime('%y-%m-%d'),
+            'date': JalaliDate(day.date).strftime('%y-%m-%d'),
             'items': items2json(day.items.all()),
             'total_time': day.total_time,
             'comments': comment2json(day.comment),
@@ -78,7 +81,7 @@ def day2json(day: Day):
         }
     except:
         return {
-            'date': day.date.strftime('%y-%m-%d'),
+            'date': JalaliDate(day.date).strftime('%y-%m-%d'),
             'items': items2json(day.items.all()),
             'total_time': day.total_time,
             'pk': day.pk,

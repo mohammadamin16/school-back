@@ -125,9 +125,8 @@ def edit_day(request):
         for item in items:
             day.items.add(item)
         day.save()
-        print(utility.day2json(day))
         user.save()
-        response = utility.get_response(f'a day {day_pk} for {username} just edited!', True)
+        response = utility.get_response(f'day {day.date} for {username} just edited!', True)
 
     except Exception as e:
         traceback.print_exc()
