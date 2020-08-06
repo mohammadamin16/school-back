@@ -9,5 +9,10 @@ def main():
     print(p)
 
 
+def get_today():
+    date = datetime.datetime.now()
+    return JalaliDate(date).strftime('%y-%m-%d')
+
+
 if __name__ == '__main__':
     main()

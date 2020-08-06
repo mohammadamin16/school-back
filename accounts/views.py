@@ -1,3 +1,6 @@
+import traceback
+
+from django.db.utils import IntegrityError
 from django.contrib.auth import authenticate
 from django.http import HttpResponse, JsonResponse
 
@@ -25,9 +28,15 @@ def signup(request):
         msg = f'user {username} created successfully!'
         data = {'user': user}
         response = utility.get_response(msg, data)
+
+    except IntegrityError:
+        traceback.print_exc()
+        msg = "this username is taken. sorry:)"
+        response = utility.get_response(msg, success=False)
+
     except Exception as e:
-        msg = e.args
-        print(e)
+        traceback.print_exc()
+        msg = "Something goes wrong!"
         response = utility.get_response(msg, success=False)
 
     return JsonResponse(response)
